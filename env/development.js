@@ -1,7 +1,7 @@
 module.exports = {
-    NODE_PORT:8080,
+    NODE_PORT:3000,
     SECRET_KEY: 'wL6kUhgYo/4?)F@%40;9rsMJs{h`.hI|4oT/`mJ"EE|Vw#kjH?FRE{vYWC<^;=t',
-    TOKEN_SECRET:'gPlki9&nhg^gfrT5kIHgFe@dR#3fbgHy^KJnh98l*sPTn#A@2lf',
+    JWT_SECRET:'gPlki9&nhg^gfrT5kIHgFe@dR#3fbgHy^KJnh98l*sPTn#A@2lf',
     OTP:'123456',
     HOST:"localhost",
     MYSQL_USER:"admin",

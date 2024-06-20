@@ -11,7 +11,7 @@ const appConstant =require("./appConstant.js");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const PORT = process.env.NODE_ENV === "test" ? process.env.TEST_PORT : process.env.NODE_PORT || 8080;
+const PORT = process.env.NODE_ENV === "test" ? process.env.TEST_PORT : process.env.NODE_PORT || 3000;
 
 
 var corsOptions = {

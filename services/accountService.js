@@ -31,7 +31,7 @@ class AccountService {
             const token = jwt.sign({ id: account.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
             return { token };
         }
-        throw new Error('Invalid credentials');
+        throw new Error('INVALID_CREDANTIALS');
     }
 }
 

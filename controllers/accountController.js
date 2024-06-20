@@ -1,21 +1,24 @@
 const accountService = require('../services/accountService');
 
+const {sendServerErrorResponse, sendSucessResponse, sendBadResponse} = require("../controllers/response.controller");
+const appConstant = require('../appConstant');
+ 
 exports.createAccount = async (req, res) => {
     try {
         const account = await accountService.createAccount(req.body);
-        res.status(201).json(account);
+        return sendSucessResponse(res, "Account Created Sucessfully", account, appConstant.STATUS_CODE.CREATED);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return sendServerErrorResponse(res, error)
     }
 };
 
 exports.getAccounts = async (req, res) => {
     try {
         const { limit } = req.query;
-        const accounts = await accountService.getAccounts(parseInt(limit, 10) || 10);
-        res.status(200).json(accounts);
+        const accounts = await accountService.getAccounts(parseInt(limit, 10) || process.env.limit);
+        return sendSucessResponse(res, "Account fatched Sucessfully", accounts, appConstant.STATUS_CODE.OK);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return sendServerErrorResponse(res, error)
     }
 };
 
@@ -23,12 +26,12 @@ exports.getAccountById = async (req, res) => {
     try {
         const account = await accountService.getAccountById(req.params.id);
         if (account) {
-            res.status(200).json(account);
+            return sendSucessResponse(res, "Account details fatched Sucessfully", account, appConstant.STATUS_CODE.OK);
         } else {
-            res.status(404).json({ error: 'Account not found' });
+            return sendBadResponse(res, 'Account not found', appConstant.STATUS_CODE.NOT_FOUND)
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return sendServerErrorResponse(res, error)
     }
 };
 
@@ -37,11 +40,12 @@ exports.updateAccount = async (req, res) => {
         const account = await accountService.updateAccount(req.params.id, req.body);
         if (account) {
             res.status(200).json(account);
+            return sendSucessResponse(res, "Account details updated Sucessfully", account, appConstant.STATUS_CODE.OK);
         } else {
-            res.status(404).json({ error: 'Account not found' });
+            return sendBadResponse(res, 'Account not found', appConstant.STATUS_CODE.NOT_FOUND)
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return sendServerErrorResponse(res, error)
     }
 };
 
@@ -49,12 +53,12 @@ exports.deleteAccount = async (req, res) => {
     try {
         const account = await accountService.deleteAccount(req.params.id);
         if (account) {
-            res.status(200).json({ message: 'Account deleted' });
+            return sendSucessResponse(res, "Account deactivated Sucessfully", account, appConstant.STATUS_CODE.OK);
         } else {
-            res.status(404).json({ error: 'Account not found' });
+            return sendBadResponse(res, 'Account not found', appConstant.STATUS_CODE.NOT_FOUND)
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return sendServerErrorResponse(res, error)
     }
 };
 
@@ -62,8 +66,11 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const result = await accountService.login(email, password);
-        res.status(200).json(result);
+        return sendSucessResponse(res, "Logged in Sucessfully", result, appConstant.STATUS_CODE.OK);
     } catch (error) {
-        res.status(401).json({ error: error.message });
+        if (error.message === 'INVALID_CREDANTIALS') {
+            return sendBadResponse(res, 'Invalid email or password', appConstant.STATUS_CODE.BAD_REQUEST)
+        }
+        return sendServerErrorResponse(res, error)
     }
 };

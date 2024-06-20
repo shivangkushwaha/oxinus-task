@@ -7,11 +7,12 @@ module.exports = (sequelize, Sequelize) => {
                 primaryKey: true,
                 autoIncrement: true,
                 allowNull: false
-            },first_name: {
+            },
+            firstName: {
                 type: Sequelize.STRING(100),
                 allowNull: false,
             },
-            last_name: {
+            lastName: {
                 type: Sequelize.STRING(100),
                 allowNull: false,
             },
@@ -32,12 +33,12 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.DATEONLY,
                 allowNull: false,
             },
-            created_at: {
+            createdAt: {
                 type: Sequelize.DATE,
                 allowNull: false,
                 defaultValue: Sequelize.NOW,
             },
-            last_modified: {
+            lastModified: {
                 type: Sequelize.DATE,
                 allowNull: false,
                 defaultValue: Sequelize.NOW,
