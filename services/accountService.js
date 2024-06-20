@@ -4,6 +4,10 @@ const accountRepository = require('../repositories/accountRepository');
 
 class AccountService {
     async createAccount(data) {
+        const exist = await accountRepository.findAccountByEmail(data.email);
+        if(exist){
+            throw "ALREADY_REGISTERD"
+        }
         data.password = await bcrypt.hash(data.password, 10);
         return await accountRepository.createAccount(data);
     }
@@ -27,6 +31,9 @@ class AccountService {
 
     async login(email, password) {
         const account = await accountRepository.findAccountByEmail(email);
+        if(!account) {
+            throw "INVALID_EMAIL"
+        }
         if (account && await bcrypt.compare(password, account.password)) {
             const token = jwt.sign({ id: account.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
             return { token };

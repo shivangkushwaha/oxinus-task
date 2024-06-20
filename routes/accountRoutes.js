@@ -5,7 +5,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const {validator} = require("../middleware/validator.middlewares")
 const schema = require('../schema/account.schema')
 
-router.post('/accounts', validator(schema.createAccountSchema), authMiddleware, accountController.createAccount);
+router.post('/accounts', validator(schema.createAccountSchema), accountController.createAccount);
 router.get('/accounts', authMiddleware, accountController.getAccounts);
 router.get('/accounts/:id', authMiddleware, accountController.getAccountById);
 router.put('/accounts/:id', authMiddleware, accountController.updateAccount);

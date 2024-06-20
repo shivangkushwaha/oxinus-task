@@ -8,6 +8,10 @@ exports.createAccount = async (req, res) => {
         const account = await accountService.createAccount(req.body);
         return sendSucessResponse(res, "Account Created Sucessfully", account, appConstant.STATUS_CODE.CREATED);
     } catch (error) {
+        if (error === 'ALREADY_REGISTERD') {
+            return sendBadResponse(res, 'Email id is already registed with us.', appConstant.STATUS_CODE.BAD_REQUEST)
+        }
+        
         return sendServerErrorResponse(res, error)
     }
 };
@@ -66,9 +70,13 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         const result = await accountService.login(email, password);
+
         return sendSucessResponse(res, "Logged in Sucessfully", result, appConstant.STATUS_CODE.OK);
     } catch (error) {
-        if (error.message === 'INVALID_CREDANTIALS') {
+        if (error === 'INVALID_EMAIL') {
+            return sendBadResponse(res, 'You are not registerd with us.', appConstant.STATUS_CODE.BAD_REQUEST)
+        }
+        else if (error === 'INVALID_CREDANTIALS') {
             return sendBadResponse(res, 'Invalid email or password', appConstant.STATUS_CODE.BAD_REQUEST)
         }
         return sendServerErrorResponse(res, error)
